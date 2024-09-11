@@ -34,16 +34,18 @@ jobs:
         run: clang --version
       - name: Bootstrap vcpkg
         run: ./vcpkg/scripts/bootstrap.ps1
+      - name: Install libobjc2
+        run: ./vcpkg/vcpkg.exe install libobjc2:x64-windows-llvm --overlay-ports=./ports --overlay-triplets=./triplets
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: installed-windows
-          path: ./installed
+          path: ./vcpkg/installed
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: buildtrees-windows
-          path: ./buildtrees/**/*.log
+          path: ./vcpkg/buildtrees/**/*.log
 
   linux:
     runs-on: ubuntu-latest
@@ -85,13 +87,15 @@ jobs:
         if: matrix.family == 'rhel'
       - name: Bootstrap vcpkg
         run: ./vcpkg/bootstrap-vcpkg.sh
+      - name: Install libobjc2
+        run: ./vcpkg/vcpkg install libobjc2:x64-linux-llvm --overlay-ports=./ports --overlay-triplets=./triplets
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: installed-${{ matrix.name }}
-          path: ./installed
+          path: ./vcpkg/installed
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: buildtrees-${{ matrix.name }}
-          path: ./buildtrees/**/*.log
+          path: ./vcpkg/buildtrees/**/*.log
