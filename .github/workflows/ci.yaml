@@ -1,0 +1,97 @@
+name: Build packages
+
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    env:
+      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout vcpkg repo
+        uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          ref: 2024.08.23
+          fetch-depth: 1
+          path: vcpkg
+      - name: Export GitHub Actions cache environment variables
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');     
+      - name: Check LLVM version
+        # We need at least LLVM 18.0 for proper Objective C support.  Visual Studio 2022 ships with LLVM 17,
+        # so we need to make sure we pick up clang from C:\Program Files\LLVM\bin\
+        # For full-fledged support on Windows, we'll need https://github.com/llvm/llvm-project/pull/107604,
+        # which will be included in LLVM 20.0
+        run: clang --version
+      - name: Bootstrap vcpkg
+        run: ./vcpkg/scripts/bootstrap.ps1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: installed-windows
+          path: ./installed
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: buildtrees-windows
+          path: ./buildtrees/**/*.log
+
+  linux:
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ubuntu-22.04
+            image: ubuntu:22.04
+            family: ubuntu
+          - name: ubuntu-24.04
+            image: ubuntu:24.04
+            family: ubuntu
+          - name: rockylinux-9
+            image: rockylinux:9
+            family: rhel
+          - name: rockylinux-8
+            image: rockylinux:8
+            family: rhel
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout vcpkg repo
+        uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          ref: 2024.08.23
+          fetch-depth: 1
+          path: vcpkg
+      - name: Install dependencies (Ubuntu)
+        run: |
+          apt-get update
+          apt-get install -y clang lld curl zip unzip tar git pkg-config make
+        if: matrix.family == 'ubuntu'
+      - name: Install dependencies (Enterprise Linux)
+        run: |
+          yum install -y clang lld zip unzip tar git pkg-config which
+        if: matrix.family == 'rhel'
+      - name: Bootstrap vcpkg
+        run: ./vcpkg/bootstrap-vcpkg.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: installed-${{ matrix.name }}
+          path: ./installed
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: buildtrees-${{ matrix.name }}
+          path: ./buildtrees/**/*.log
