@@ -1,0 +1,39 @@
+{
+    "name": "gnustep-base",
+    "version": "1.30.0",
+    "description": "The GNUstep Base Library is a library of general-purpose, non-graphical Objective C objects.",
+    "homepage": "https://github.com/gnustep/libs-base",
+    "license": "LGPL-2.1",
+    "supports": "!static & (linux | windows)",
+    "dependencies": [
+      {
+        "name": "libobjc2"
+      },
+      {
+        "name": "libdispatch"
+      },
+      {
+        "name": "gnustep-make"
+      },
+      {
+        "name": "libffi",
+        "platform": "windows"
+      },
+      {
+        "name": "libxml2",
+        "platform": "windows"
+      },
+      {
+        "name": "libxslt",
+        "platform": "windows"
+      },
+      {
+        "name": "curl",
+        "platform": "windows"
+      },
+      {
+        "name": "vcpkg-gnustep",
+        "host": true
+      }
+    ]
+  }
