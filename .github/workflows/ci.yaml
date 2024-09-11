@@ -36,6 +36,8 @@ jobs:
         run: ./vcpkg/scripts/bootstrap.ps1
       - name: Install libobjc2
         run: ./vcpkg/vcpkg.exe install libobjc2:x64-windows-llvm --overlay-ports=./ports --overlay-triplets=./triplets
+      - name: Install libdispatch
+        run: ./vcpkg/vcpkg.exe install libdispatch:x64-windows-llvm --overlay-ports=./ports --overlay-triplets=./triplets
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -89,6 +91,8 @@ jobs:
         run: ./vcpkg/bootstrap-vcpkg.sh
       - name: Install libobjc2
         run: ./vcpkg/vcpkg install libobjc2:x64-linux-llvm --overlay-ports=./ports --overlay-triplets=./triplets
+      - name: Install libdispatch
+        run: ./vcpkg/vcpkg install libdispatch:x64-linux-llvm --overlay-ports=./ports --overlay-triplets=./triplets
       - uses: actions/upload-artifact@v4
         if: always()
         with:
