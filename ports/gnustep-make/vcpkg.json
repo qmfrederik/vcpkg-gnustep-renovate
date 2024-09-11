@@ -1,0 +1,17 @@
+{
+    "name": "gnustep-make",
+    "version": "2.9.2",
+    "description": "The makefile package is a simple, powerful and extensible way to write makefiles for a GNUstep-based project.",
+    "homepage": "https://github.com/gnustep/tools-make",
+    "license": "GPL-3.0",
+    "supports": "!static & (linux | windows)",
+    "dependencies": [
+      {
+        "name": "libobjc2"
+      },
+      {
+        "name": "vcpkg-gnustep",
+        "host": true
+      }
+    ]
+}
