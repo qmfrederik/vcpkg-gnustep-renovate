@@ -1,0 +1,37 @@
+From c764ca322640d1c5e4e57b6efb5b839d9fa72637 Mon Sep 17 00:00:00 2001
+From: Frederik Carlier <frederik.carlier@keysight.com>
+Date: Wed, 11 Sep 2024 12:31:01 +0000
+Subject: [PATCH] Use external BlocksRuntime
+
+---
+ CMakeLists.txt     | 2 ++
+ src/CMakeLists.txt | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4dcc332..98b4768 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -149,6 +149,8 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL Android)
+   find_package(LibRT)
+ endif()
+ 
++find_package(BlocksRuntime QUIET)
++
+ check_function_exists(_pthread_workqueue_init HAVE__PTHREAD_WORKQUEUE_INIT)
+ check_function_exists(getprogname HAVE_GETPROGNAME)
+ check_function_exists(mach_absolute_time HAVE_MACH_ABSOLUTE_TIME)
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index e14af54..61adcea 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ 
+-if(NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
++if(NOT BlocksRuntime_FOUND)
+   add_subdirectory(BlocksRuntime)
+ endif()
+ 
+-- 
+2.46.0.windows.1
+
