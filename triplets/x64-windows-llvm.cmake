@@ -4,8 +4,10 @@ set(VCPKG_CRT_LINKAGE dynamic)
 
 # Configure toolchain
 # Some ports need to be built with clang-cl instead of clang.  For example,
-# libffi uses libtool, which pass msvc-style arguments to the linker (-EXPORT:symbol)
-if(PORT MATCHES "^(libffi|libiconv)$")
+# - libffi and libiconv use libtool, which pass msvc-style arguments to the linker (-EXPORT:symbol)
+# - libxlst uses #include <win32config.h> for a local file, and should use quotes instead
+#   https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/libxslt/libxslt.h#L27
+if(PORT MATCHES "^(libffi|libiconv|libxslt)$")
     set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchains/x64-windows-clangcl.toolchain.cmake")
 else()
     set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchains/x64-windows-llvm.toolchain.cmake")
