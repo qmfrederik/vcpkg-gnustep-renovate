@@ -18,4 +18,10 @@ if(PORT MATCHES "liblzma")
     set(VCPKG_CMAKE_CONFIGURE_OPTIONS "-DMSVC=1")
 endif()
 
+if(PORT MATCHES "libjpeg-turbo")
+    # libjpeg-turbo doesn't know about clang on Windows; only considers 'vc' and 'mingw', make it think we're building for vc:
+    # (https://github.com/libjpeg-turbo/libjpeg-turbo/blob/dd8b15ee82b02e41307f9ca9144d8ca140d67816/cmakescripts/BuildPackages.cmake#L71)
+    set(VCPKG_CMAKE_CONFIGURE_OPTIONS "-DINST_ID=vc")
+endif()
+
 set(VCPKG_LOAD_VCVARS_ENV ON)
