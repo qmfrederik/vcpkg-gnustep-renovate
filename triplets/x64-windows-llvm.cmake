@@ -4,11 +4,26 @@ set(VCPKG_CRT_LINKAGE dynamic)
 
 # Configure toolchain
 # Some ports need to be built with clang-cl instead of clang.  For example,
-# libffi uses libtool, which pass msvc-style arguments to the linker (-EXPORT:symbol)
-if(PORT MATCHES "libffi")
+# - libffi and libiconv use libtool, which pass msvc-style arguments to the linker (-EXPORT:symbol)
+# - libxlst uses #include <win32config.h> for a local file, and should use quotes instead
+#   https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/libxslt/libxslt.h#L27
+if(PORT MATCHES "^(libffi|libiconv|libxslt)$")
     set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchains/x64-windows-clangcl.toolchain.cmake")
 else()
     set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchains/x64-windows-llvm.toolchain.cmake")
+endif()
+
+# Port-specific fixes which we should remove over time
+if(PORT MATCHES "liblzma")
+    # Pretend to be msvc, as otherwise the build system will default to GCC-style semantics (and we're using clang)
+    # https://github.com/tukaani-project/xz/blob/68c54e45d042add64a4cb44bfc87ca74d29b87e2/CMakeLists.txt#L1389
+    set(VCPKG_CMAKE_CONFIGURE_OPTIONS "-DMSVC=1")
+endif()
+
+if(PORT MATCHES "libjpeg-turbo")
+    # libjpeg-turbo doesn't know about clang on Windows; only considers 'vc' and 'mingw', make it think we're building for vc:
+    # (https://github.com/libjpeg-turbo/libjpeg-turbo/blob/dd8b15ee82b02e41307f9ca9144d8ca140d67816/cmakescripts/BuildPackages.cmake#L71)
+    set(VCPKG_CMAKE_CONFIGURE_OPTIONS "-DINST_ID=vc")
 endif()
 
 set(VCPKG_LOAD_VCVARS_ENV ON)
