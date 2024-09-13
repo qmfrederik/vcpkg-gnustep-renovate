@@ -70,9 +70,14 @@ jobs:
           - name: rockylinux-9
             image: rockylinux:9
             family: rhel
+            # Some packages, such as giflib-devel, are not in the base RHEL repos but in an additional repository;
+            # which was named 'powertools' on RHEL8 and 'CodeReady Builder' on RHEL9.
+            # See https://wiki.rockylinux.org/rocky/repo/#notes-on-crb
+            repos: crb
           - name: rockylinux-8
             image: rockylinux:8
             family: rhel
+            repos: powertools
     steps:
       - uses: actions/checkout@v4
       - name: Checkout vcpkg repo
@@ -117,9 +122,7 @@ jobs:
         if: matrix.family == 'ubuntu'
       - name: Install gnustep-base dependencies (Enterprise Linux)
         run: |
-          yum install -y dnf-plugins-core
-          yum config-manager --set-enabled crb
-          yum install -y libtiff-devel libpng-devel libjpeg-devel giflib-devel
+          yum install --enablerepo=${{ matrix.repos}} -y libtiff-devel libpng-devel libjpeg-devel giflib-devel
         if: matrix.family == 'rhel'
       - name: Install gnustep-gui
         run: ./vcpkg/vcpkg install gnustep-gui:x64-linux-llvm --overlay-ports=./ports --overlay-triplets=./triplets
