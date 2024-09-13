@@ -1,0 +1,33 @@
+{
+    "name": "gnustep-gui",
+    "version": "0.31.1",
+    "description": "The GNUstep gui library is a library of graphical user interface classes written completely in the Objective-C language; the classes are based upon Apple's Cocoa framework (which came from the OpenStep specification).",
+    "homepage": "https://github.com/gnustep/libs-gui",
+    "license": "LGPL-2.1",
+    "supports": "!static & (linux | windows)",
+    "dependencies": [
+      {
+        "name": "gnustep-base"
+      },
+      {
+        "name": "tiff",
+        "platform": "windows"
+      },
+      {
+        "name": "libpng",
+        "platform": "windows"
+      },
+      {
+        "name": "libjpeg-turbo",
+        "platform": "windows"
+      },
+      {
+        "name": "giflib",
+        "platform": "windows"
+      },
+      {
+        "name": "vcpkg-gnustep",
+        "host": true
+      }
+    ]
+  }
