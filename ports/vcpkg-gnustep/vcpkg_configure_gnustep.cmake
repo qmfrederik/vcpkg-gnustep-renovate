@@ -103,7 +103,7 @@ function(vcpkg_configure_gnustep)
 
             # Copy the sources to the target directory for an out-of-source build
             set(target_dir "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-${short_name_${current_buildtype}}")
-            file(COPY "${SOURCE_PATH}/" DESTINATION "${target_dir}")
+            file(COPY "${arg_SOURCE_PATH}/" DESTINATION "${target_dir}")
 
             vcpkg_execute_required_process(
                 COMMAND ${base_cmd} -c "./configure ${CONFIGURE_OPTIONS}"
