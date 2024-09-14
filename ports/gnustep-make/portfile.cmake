@@ -9,11 +9,15 @@ vcpkg_from_github(
     PATCHES
 )
 
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/FilesystemLayouts/vcpkg-debug DESTINATION ${SOURCE_PATH}/FilesystemLayouts/)
+
 vcpkg_configure_gnustep(
     SOURCE_PATH ${SOURCE_PATH}
     OPTIONS
         --with-library-combo=ng-gnu-gnu
         --with-runtime-abi=gnustep-2.2
+    OPTIONS_DEBUG
+        --with-layout=vcpkg-debug
 )
 
 vcpkg_install_gnustep()

@@ -4,7 +4,7 @@ function(vcpkg_configure_gnustep)
     cmake_parse_arguments(PARSE_ARGV 0 "arg"
         ""
         "SOURCE_PATH"
-        "OPTIONS"
+        "OPTIONS;OPTIONS_DEBUG;OPTIONS_RELEASE"
     )
 
     if(VCPKG_TARGET_IS_LINUX)
@@ -19,6 +19,10 @@ function(vcpkg_configure_gnustep)
             OPTIONS
                 "LDFLAGS=-fuse-ld=lld"
                 ${arg_OPTIONS}
+            OPTIONS_DEBUG
+                ${arg_OPTIONS_DEBUG}
+            OPTIONS_RELEASE
+                ${arg_OPTIONS_RELEASE}
         )
     elseif(VCPKG_TARGET_IS_WINDOWS)
         # We don't use vcpkg_configure_make on Windows because it ends up breaking the linker in such a way that it cannot
@@ -100,7 +104,8 @@ function(vcpkg_configure_gnustep)
                 "CC=${GNUSTEP_C_COMPILER_NAME}"
                 "CXX=${GNUSTEP_CXX_COMPILER_NAME}"
                 "LDFLAGS=-fuse-ld=${GNUSTEP_LINKER_NAME}"
-                ${arg_OPTIONS})
+                ${arg_OPTIONS}
+                ${arg_OPTIONS_${current_buildtype}})
 
             list(JOIN CONFIGURE_OPTIONS " " CONFIGURE_OPTIONS)
 
