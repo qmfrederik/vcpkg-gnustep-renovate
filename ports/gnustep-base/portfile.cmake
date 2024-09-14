@@ -22,16 +22,10 @@ vcpkg_configure_gnustep(
     OPTIONS
         # GNUstep.conf contains absolute paths, and doesn't exist in vcpkg
         --disable-importing-config-file
-        # gnustep-config is not in PATH, so specify the path to the makefiles
-        GNUSTEP_MAKEFILES=${CURRENT_INSTALLED_DIR}/share/GNUstep/Makefiles/
         ${options}
 )
 
-vcpkg_install_gnustep(
-    OPTIONS
-        # gnustep-config is not in PATH, so specify the path to the makefiles
-        GNUSTEP_MAKEFILES=${CURRENT_INSTALLED_DIR}/share/GNUstep/Makefiles/
-)
+vcpkg_install_gnustep()
 
 vcpkg_fixup_pkgconfig()
 

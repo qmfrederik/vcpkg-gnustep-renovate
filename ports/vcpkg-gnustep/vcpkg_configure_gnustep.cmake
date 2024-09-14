@@ -21,8 +21,10 @@ function(vcpkg_configure_gnustep)
                 ${arg_OPTIONS}
             OPTIONS_DEBUG
                 ${arg_OPTIONS_DEBUG}
+                "GNUSTEP_MAKEFILES=${CURRENT_INSTALLED_DIR}/debug/share/GNUstep/Makefiles/"
             OPTIONS_RELEASE
                 ${arg_OPTIONS_RELEASE}
+                "GNUSTEP_MAKEFILES=${CURRENT_INSTALLED_DIR}/share/GNUstep/Makefiles/"
         )
     elseif(VCPKG_TARGET_IS_WINDOWS)
         # We don't use vcpkg_configure_make on Windows because it ends up breaking the linker in such a way that it cannot
@@ -104,6 +106,7 @@ function(vcpkg_configure_gnustep)
                 "CC=${GNUSTEP_C_COMPILER_NAME}"
                 "CXX=${GNUSTEP_CXX_COMPILER_NAME}"
                 "LDFLAGS=-fuse-ld=${GNUSTEP_LINKER_NAME}"
+                "GNUSTEP_MAKEFILES=${current_installed_dir_msys}${path_suffix_${current_buildtype}}/share/GNUstep/Makefiles/"
                 ${arg_OPTIONS}
                 ${arg_OPTIONS_${current_buildtype}})
 
