@@ -14,6 +14,8 @@ vcpkg_from_github(
         0001-Disable-building-Tools.patch
         0001-Add-APPKIT_EXPORT_CLASS-statements.patch
         0001-GSMemoryPanel-Only-call-GSDebug-in-debug-mode.patch
+        # https://github.com/gnustep/libs-gui/pull/290
+        45edc31c3c4bf14f2a257339ca0743e292b7bc96.diff
 )
 
 vcpkg_list(SET options)
