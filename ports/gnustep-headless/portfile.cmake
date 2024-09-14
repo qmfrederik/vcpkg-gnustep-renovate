@@ -29,10 +29,12 @@ if (VCPKG_TARGET_IS_WINDOWS)
     # fixme: Utilities such as plutil are not installed in the debug/bin location, so always add ${CURRENT_INSTALLED_DIR}/bin
     # to path
     set(path_backup $ENV{PATH})
-    vcpkg_add_to_path("${CURRENT_INSTALLED_DIR}/bin/")
+    vcpkg_add_to_path("${current_installed_dir_msys}/bin/")
+    vcpkg_add_to_path("${current_installed_dir_msys}/tools/gnustep-base/")
 else()
     # gnustep-config is not in PATH, so specify the path to the makefiles
     vcpkg_list(APPEND options "GNUSTEP_MAKEFILES=${CURRENT_INSTALLED_DIR}/share/GNUstep/Makefiles/")
+    vcpkg_add_to_path("${CURRENT_INSTALLED_DIR}/tools/gnustep-base/")
 endif ()
 
 vcpkg_configure_gnustep(
