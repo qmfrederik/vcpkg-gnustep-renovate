@@ -7,7 +7,7 @@
     "supports": "!static & (linux | windows)",
     "dependencies": [
       {
-        "name": "gnustep-base"
+        "name": "gnustep-gui"
       },
       {
         "name": "tiff",
