@@ -36,3 +36,36 @@ vcpkg_install_gnustep(
 vcpkg_fixup_pkgconfig()
 
 vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/COPYING.LIB")
+
+# Copy tools to the tools directory, remove duplicate instances in debug/
+vcpkg_copy_tools(
+    TOOL_NAMES
+        autogsdoc
+        cvtenc
+        defaults
+        gdnc
+        gspath
+        HTMLLinker
+        make_strings
+        pl
+        pl2link
+        pldes
+        plget
+        plmerge
+        plparse
+        plser
+        plutil
+        sfparse
+        xmlparse
+    AUTO_CLEAN
+)
+
+if (NOT VCPKG_TARGET_IS_WINDOWS)
+    vcpkg_copy_tools(
+        TOOL_NAMES
+            gdomap
+        AUTO_CLEAN)
+endif ()
+
+# The makefiles used by GNUstep go in share, and are different for the release and debug configuration
+set(VCPKG_POLICY_ALLOW_DEBUG_SHARE enabled)
