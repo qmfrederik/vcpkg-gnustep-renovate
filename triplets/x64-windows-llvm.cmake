@@ -7,7 +7,9 @@ set(VCPKG_CRT_LINKAGE dynamic)
 # - libffi and libiconv use libtool, which pass msvc-style arguments to the linker (-EXPORT:symbol)
 # - libxlst uses #include <win32config.h> for a local file, and should use quotes instead
 #   https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/libxslt/libxslt.h#L27
-if(PORT MATCHES "^(libffi|libiconv|libxslt)$")
+# - curl somehow builds without exports; probably because all of the voodoo here:
+#   https://github.com/curl/curl/blob/master/CMake/CurlSymbolHiding.cmake#L71
+if(PORT MATCHES "^(libffi|libiconv|libxslt|curl)$")
     set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchains/x64-windows-clangcl.toolchain.cmake")
 else()
     set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchains/x64-windows-llvm.toolchain.cmake")
