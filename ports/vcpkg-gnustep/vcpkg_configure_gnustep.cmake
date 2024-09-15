@@ -4,7 +4,7 @@ function(vcpkg_configure_gnustep)
     cmake_parse_arguments(PARSE_ARGV 0 "arg"
         ""
         "SOURCE_PATH"
-        "OPTIONS"
+        "OPTIONS;OPTIONS_DEBUG;OPTIONS_RELEASE"
     )
 
     if(VCPKG_TARGET_IS_LINUX)
@@ -19,6 +19,12 @@ function(vcpkg_configure_gnustep)
             OPTIONS
                 "LDFLAGS=-fuse-ld=lld"
                 ${arg_OPTIONS}
+            OPTIONS_DEBUG
+                ${arg_OPTIONS_DEBUG}
+                "GNUSTEP_MAKEFILES=${CURRENT_INSTALLED_DIR}/debug/share/GNUstep/Makefiles/"
+            OPTIONS_RELEASE
+                ${arg_OPTIONS_RELEASE}
+                "GNUSTEP_MAKEFILES=${CURRENT_INSTALLED_DIR}/share/GNUstep/Makefiles/"
         )
     elseif(VCPKG_TARGET_IS_WINDOWS)
         # We don't use vcpkg_configure_make on Windows because it ends up breaking the linker in such a way that it cannot
@@ -79,25 +85,30 @@ function(vcpkg_configure_gnustep)
             list(APPEND all_buildtypes RELEASE)
         endif()
 
-        # Allow ./configure to find gnustep-config, which is in bin/
-        set(path_backup $ENV{PATH})
-        vcpkg_add_to_path("${CURRENT_INSTALLED_DIR}${path_suffix_${current_buildtype}}/bin")
-
         foreach(current_buildtype IN LISTS all_buildtypes)
-            vcpkg_list(APPEND CONFIGURE_OPTIONS
-                                # ${prefix} has an extra backslash to prevent early expansion when calling `bash -c configure "..."`.
-                                "--prefix=${current_installed_dir_msys}${path_suffix_${current_buildtype}}"
-                                # Important: These should all be relative to prefix!
-                                "--bindir=\\\${prefix}/../tools/${PORT}${path_suffix_${current_buildtype}}/bin"
-                                "--sbindir=\\\${prefix}/../tools/${PORT}${path_suffix_${current_buildtype}}/sbin"
-                                "--libdir=\\\${prefix}/lib" # On some Linux distributions lib64 is the default
-                                "--datarootdir=\\\${prefix}/share/${PORT}"
-                                "--host=x86_64-pc-windows"
-                                "--target=x86_64-pc-windows"
-                                "CC=${GNUSTEP_C_COMPILER_NAME}"
-                                "CXX=${GNUSTEP_CXX_COMPILER_NAME}"
-                                "LDFLAGS=-fuse-ld=${GNUSTEP_LINKER_NAME}"
-                                ${arg_OPTIONS})
+            # Allow ./configure to find gnustep-config, which is in bin/
+            set(path_backup $ENV{PATH})
+            vcpkg_add_to_path("${CURRENT_INSTALLED_DIR}${path_suffix_${current_buildtype}}/bin")
+
+            # The same variable will be re-used in the foreach loop, so make sure to use set instead of
+            # append!
+            vcpkg_list(
+                SET CONFIGURE_OPTIONS
+                # ${prefix} has an extra backslash to prevent early expansion when calling `bash -c configure "..."`.
+                "--prefix=${current_installed_dir_msys}${path_suffix_${current_buildtype}}"
+                # Important: These should all be relative to prefix!
+                "--bindir=\\\${prefix}/../tools/${PORT}${path_suffix_${current_buildtype}}/bin"
+                "--sbindir=\\\${prefix}/../tools/${PORT}${path_suffix_${current_buildtype}}/sbin"
+                "--libdir=\\\${prefix}/lib" # On some Linux distributions lib64 is the default
+                "--datarootdir=\\\${prefix}/share/${PORT}"
+                "--host=x86_64-pc-windows"
+                "--target=x86_64-pc-windows"
+                "CC=${GNUSTEP_C_COMPILER_NAME}"
+                "CXX=${GNUSTEP_CXX_COMPILER_NAME}"
+                "LDFLAGS=-fuse-ld=${GNUSTEP_LINKER_NAME}"
+                "GNUSTEP_MAKEFILES=${current_installed_dir_msys}${path_suffix_${current_buildtype}}/share/GNUstep/Makefiles/"
+                ${arg_OPTIONS}
+                ${arg_OPTIONS_${current_buildtype}})
 
             list(JOIN CONFIGURE_OPTIONS " " CONFIGURE_OPTIONS)
 
@@ -111,9 +122,9 @@ function(vcpkg_configure_gnustep)
                 LOGNAME "config-${TARGET_TRIPLET}-${short_name_${current_buildtype}}"
                 SAVE_LOG_FILES config.log
             )
-        endforeach()
         
-        set(ENV{PATH} "${path_backup}")
+            set(ENV{PATH} "${path_backup}")
+        endforeach()
     else()
         message(FATAL_ERROR "${CMAKE_CURRENT_FUNCTION} is not implemented for your platform")
     endif()
