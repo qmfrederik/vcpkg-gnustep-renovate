@@ -1,0 +1,90 @@
+From 6a54d507d533ba1c9def40000cc3bbe6d3442b46 Mon Sep 17 00:00:00 2001
+From: Frederik Carlier <frederik.carlier@keysight.com>
+Date: Mon, 9 Sep 2024 09:05:59 +0000
+Subject: [PATCH] Define WINBOOL on non-MinGW platforms
+
+The Windows SDK declares BOOL as an int.  Objective C defines BOOl as a char.
+Those two types clash.  MinGW's implementation of the Windows SDK uses the WINBOOL
+type to avoid this clash.  When compiling natively on Windows, we need to manually
+define WINBOOL.
+MinGW will define _DEF_WINBOOL_ if it has defined WINBOOL so we can use the same trick
+here.
+See https://github.com/mingw-w64/mingw-w64/blob/master/mingw-w64-headers/include/ntdef.h#L355
+---
+ Source/win32/WIN32Server.m       | 12 ++++++++++++
+ Source/win32/w32_windowdisplay.m | 12 ++++++++++++
+ Tools/win32pbs.m                 | 12 ++++++++++++
+ 3 files changed, 36 insertions(+)
+
+diff --git a/Source/win32/WIN32Server.m b/Source/win32/WIN32Server.m
+index e98c401..537ecad 100644
+--- a/Source/win32/WIN32Server.m
++++ b/Source/win32/WIN32Server.m
+@@ -63,6 +63,18 @@
+ 
+ #include <math.h>
+ 
++// The Windows SDK declares BOOL as an int.  Objective C defines BOOl as a char.
++// Those two types clash.  MinGW's implementation of the Windows SDK uses the WINBOOL
++// type to avoid this clash.  When compiling natively on Windows, we need to manually
++// define WINBOOL.
++// MinGW will define _DEF_WINBOOL_ if it has defined WINBOOL so we can use the same trick
++// here.
++// See https://github.com/mingw-w64/mingw-w64/blob/master/mingw-w64-headers/include/ntdef.h#L355
++#ifndef _DEF_WINBOOL_
++#define _DEF_WINBOOL_
++typedef int WINBOOL;
++#endif
++
+ // To update the cursor..
+ static BOOL update_cursor = NO;
+ static BOOL should_handle_cursor = NO;
+diff --git a/Source/win32/w32_windowdisplay.m b/Source/win32/w32_windowdisplay.m
+index 8f61e9e..5487d1c 100644
+--- a/Source/win32/w32_windowdisplay.m
++++ b/Source/win32/w32_windowdisplay.m
+@@ -33,6 +33,18 @@
+ #include "win32/WIN32Server.h"
+ #include "win32/WIN32Geometry.h"
+ 
++// The Windows SDK declares BOOL as an int.  Objective C defines BOOl as a char.
++// Those two types clash.  MinGW's implementation of the Windows SDK uses the WINBOOL
++// type to avoid this clash.  When compiling natively on Windows, we need to manually
++// define WINBOOL.
++// MinGW will define _DEF_WINBOOL_ if it has defined WINBOOL so we can use the same trick
++// here.
++// See https://github.com/mingw-w64/mingw-w64/blob/master/mingw-w64-headers/include/ntdef.h#L355
++#ifndef _DEF_WINBOOL_
++#define _DEF_WINBOOL_
++typedef int WINBOOL;
++#endif
++
+ static void 
+ invalidateWindow(WIN32Server *svr, HWND hwnd, RECT rect)
+ {
+diff --git a/Tools/win32pbs.m b/Tools/win32pbs.m
+index 740dc7c..a989bba 100755
+--- a/Tools/win32pbs.m
++++ b/Tools/win32pbs.m
+@@ -40,6 +40,18 @@
+ #include <sys/file.h>
+ #endif
+ 
++// The Windows SDK declares BOOL as an int.  Objective C defines BOOl as a char.
++// Those two types clash.  MinGW's implementation of the Windows SDK uses the WINBOOL
++// type to avoid this clash.  When compiling natively on Windows, we need to manually
++// define WINBOOL.
++// MinGW will define _DEF_WINBOOL_ if it has defined WINBOOL so we can use the same trick
++// here.
++// See https://github.com/mingw-w64/mingw-w64/blob/master/mingw-w64-headers/include/ntdef.h#L355
++#ifndef _DEF_WINBOOL_
++#define _DEF_WINBOOL_
++typedef int WINBOOL;
++#endif
++
+ @interface Win32PbOwner : NSObject
+ {
+   NSPasteboard	*_pb;
+-- 
+2.46.0.windows.1
+

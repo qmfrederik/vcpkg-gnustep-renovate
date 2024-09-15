@@ -44,6 +44,11 @@ jobs:
         run: ./vcpkg/vcpkg.exe install gnustep-gui:x64-windows-llvm --overlay-ports=./ports --overlay-triplets=./triplets
       - name: Install gnustep-headless
         run: ./vcpkg/vcpkg.exe install gnustep-headless:x64-windows-llvm --overlay-ports=./ports --overlay-triplets=./triplets
+      - name: Install gnustep-back
+        # Only require the core cairo features; some of the transitive dependencies generate build problems;
+        # but we must disable the optional features on the dependency itself:
+        # https://github.com/microsoft/vcpkg/issues/26664#issuecomment-1374506677
+        run: ./vcpkg/vcpkg.exe install cairo[core]:x64-windows-llvm gnustep-back:x64-windows-llvm --overlay-ports=./ports --overlay-triplets=./triplets
       - uses: actions/upload-artifact@v4
         if: always()
         with:
