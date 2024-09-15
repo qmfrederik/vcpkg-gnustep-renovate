@@ -10,27 +10,6 @@ vcpkg_from_github(
         0001-Windows-compatibility.patch
 )
 
-vcpkg_list(SET options)
-
-# Utilities such as plutil and plmerge are installed to /tools, so always add ${CURRENT_INSTALLED_DIR}/tools
-# to path
-# TODO: We could/should move this logic into vcpkg_configure_gnustep, as that method also calculates current_installed_dir_msys
-set(path_backup $ENV{PATH})
-if (VCPKG_TARGET_IS_WINDOWS)
-    # Some PATH handling for dealing with spaces....some tools will still fail with that!
-    # In particular, the libtool install command is unable to install correctly to paths with spaces.
-    string(REPLACE " " "\\ " current_installed_dir_escaped "${CURRENT_INSTALLED_DIR}")
-    set(current_installed_dir_msys "${CURRENT_INSTALLED_DIR}")
-
-    if(CMAKE_HOST_WIN32)
-        string(REGEX REPLACE "^([a-zA-Z]):/" "/\\1/" current_installed_dir_msys "${current_installed_dir_msys}")
-    endif()
-
-    vcpkg_add_to_path("${current_installed_dir_msys}/tools/gnustep-base/")
-else()
-    vcpkg_add_to_path("${CURRENT_INSTALLED_DIR}/tools/gnustep-base/")
-endif()
-
 vcpkg_configure_gnustep(
     SOURCE_PATH ${SOURCE_PATH}
     OPTIONS
