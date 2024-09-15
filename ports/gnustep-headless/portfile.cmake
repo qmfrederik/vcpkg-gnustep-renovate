@@ -47,7 +47,9 @@ vcpkg_configure_gnustep(
         ${options}
 )
 
+vcpkg_add_to_path("${CURRENT_INSTALLED_DIR}/tools/gnustep-base/")
 vcpkg_add_to_path("${CURRENT_INSTALLED_DIR}/bin/")
+
 vcpkg_install_gnustep()
 
 vcpkg_fixup_pkgconfig()
