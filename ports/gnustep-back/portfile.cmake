@@ -12,11 +12,19 @@ vcpkg_from_github(
         0001-Define-WINBOOL-on-non-MinGW-platforms.patch
 )
 
+if(VCPKG_TARGET_IS_WINDOWS)
+    set(graphics "winlib")
+    set(server "win32")
+else()
+    set(graphics "cairo")
+    set(server "x11")
+endif()
+
 vcpkg_configure_gnustep(
     SOURCE_PATH ${SOURCE_PATH}
     OPTIONS
-        "--enable-graphics=winlib"
-        "--enable-server=win32"
+        "--enable-graphics=${graphics}"
+        "--enable-server=${server}"
         ${options}
 )
 

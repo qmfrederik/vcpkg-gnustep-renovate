@@ -135,6 +135,17 @@ jobs:
         run: ./vcpkg/vcpkg install gnustep-gui:x64-linux-llvm --overlay-ports=./ports --overlay-triplets=./triplets
       - name: Install gnustep-headless
         run: ./vcpkg/vcpkg install gnustep-headless:x64-linux-llvm --overlay-ports=./ports --overlay-triplets=./triplets
+      - name: Install gnustep-back dependencies (Ubuntu)
+        run: |
+          apt-get update
+          apt-get install -y libcairo2-dev libxt-dev
+        if: matrix.family == 'ubuntu'
+      - name: Install gnustep-base dependencies (Enterprise Linux)
+        run: |
+          yum install --enablerepo=${{ matrix.repos}} -y cairo-devel libXt-devel
+        if: matrix.family == 'rhel'
+      - name: Install gnustep-back
+        run: ./vcpkg/vcpkg install gnustep-back:x64-linux-llvm --overlay-ports=./ports --overlay-triplets=./triplets
       - uses: actions/upload-artifact@v4
         if: always()
         with:
