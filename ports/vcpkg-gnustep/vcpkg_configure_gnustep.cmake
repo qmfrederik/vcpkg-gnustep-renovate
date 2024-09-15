@@ -116,6 +116,7 @@ function(vcpkg_configure_gnustep)
             set(target_dir "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-${short_name_${current_buildtype}}")
             file(COPY "${arg_SOURCE_PATH}/" DESTINATION "${target_dir}")
 
+            message(STATUS "Configuring ${TARGET_TRIPLET}-${short_name_${current_buildtype}}")
             vcpkg_execute_required_process(
                 COMMAND ${base_cmd} -c "./configure ${CONFIGURE_OPTIONS}"
                 WORKING_DIRECTORY "${target_dir}"
