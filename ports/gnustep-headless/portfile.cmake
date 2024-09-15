@@ -29,5 +29,12 @@ vcpkg_fixup_pkgconfig()
 
 vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/COPYING.LIB")
 
+# the gpbs utility, its manpage, and the various fonts are not relevant for a headless installation
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/bin/")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/bin/")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/share/man/")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/lib/GNUstep/Fonts")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/lib/GNUstep/Fonts")
+
 # gnustep-headless does not include headers
 set(VCPKG_POLICY_EMPTY_INCLUDE_FOLDER enabled)
