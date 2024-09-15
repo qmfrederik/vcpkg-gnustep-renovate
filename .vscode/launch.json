@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "cmake",
+            "request": "launch",
+            "name": "gnustep-headless",
+            "cmakeDebugType": "external",
+            "pipeName": "\\\\.\\pipe\\portfile_debugging",
+            "preLaunchTask": "Reinstall gnustep-headless"
+        }
+    ]
+}

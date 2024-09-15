@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Reinstall gnustep-headless",
+            "type": "shell",
+            "isBackground": true,
+            "command": "& \"${workspaceFolder}/vcpkg/vcpkg.exe\" remove gnustep-headless:x64-windows-llvm; & \"${workspaceFolder}/vcpkg/vcpkg.exe\" install gnustep-headless:x64-windows-llvm --overlay-ports=${workspaceFolder}/ports --overlay-triplets=${workspaceFolder}/triplets --no-binarycaching --x-cmake-debug \\\\.\\pipe\\portfile_debugging",
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": "",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".",
+                        "endsPattern": "Waiting for debugger client to connect"
+                    }
+                }
+            ]
+        }
+    ]
+}
