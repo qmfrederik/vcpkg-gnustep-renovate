@@ -11,6 +11,10 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dotnet/nbgv@master
+        id: nbgv
       - name: Checkout vcpkg repo
         uses: actions/checkout@v4
         with:
@@ -47,12 +51,12 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: installed-windows
+          name: vcpkg-gnustep-${{ steps.nbgv.outputs.NuGetPackageVersion }}-windows
           path: ./vcpkg/installed
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: buildtrees-windows
+          name: vcpkg-gnustep-${{ steps.nbgv.outputs.NuGetPackageVersion }}-windows-logs
           path: ./vcpkg/buildtrees/**/*.log
 
   linux:
@@ -80,15 +84,9 @@ jobs:
             image: rockylinux:8
             family: rhel
             repos: powertools
+    env:
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: true
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout vcpkg repo
-        uses: actions/checkout@v4
-        with:
-          repository: microsoft/vcpkg
-          ref: 2024.08.23
-          fetch-depth: 1
-          path: vcpkg
       - name: Install dependencies (Ubuntu)
         run: |
           apt-get update
@@ -96,10 +94,25 @@ jobs:
         if: matrix.family == 'ubuntu'
       - name: Install dependencies (Enterprise Linux)
         run: |
-          yum install -y clang lld zip unzip tar git pkg-config which
+          yum install -y clang lld zip unzip tar git pkg-config which findutils
         if: matrix.family == 'rhel'
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          ref: 2024.08.23
+          fetch-depth: 1
+          path: vcpkg
       - name: Bootstrap vcpkg
         run: ./vcpkg/bootstrap-vcpkg.sh
+        # .NET is a dependency of nbgv
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+      - uses: dotnet/nbgv@master
+        id: nbgv
       - name: Install libobjc2
         run: ./vcpkg/vcpkg install libobjc2:x64-linux-llvm --overlay-ports=./ports --overlay-triplets=./triplets
       - name: Install libdispatch
@@ -133,10 +146,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: installed-${{ matrix.name }}
+          name: vcpkg-gnustep-${{ steps.nbgv.outputs.NuGetPackageVersion }}-${{ matrix.name }}
           path: ./vcpkg/installed
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: buildtrees-${{ matrix.name }}
+          name: vcpkg-gnustep-${{ steps.nbgv.outputs.NuGetPackageVersion }}-${{ matrix.name }}-logs
           path: ./vcpkg/buildtrees/**/*.log
