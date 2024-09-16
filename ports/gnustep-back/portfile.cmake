@@ -15,6 +15,7 @@ vcpkg_from_github(
 if(VCPKG_TARGET_IS_WINDOWS)
     set(graphics "winlib")
     set(server "win32")
+    set(options "--without-freetype")
 else()
     set(graphics "cairo")
     set(server "x11")
