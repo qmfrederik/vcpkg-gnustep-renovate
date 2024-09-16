@@ -1,0 +1,30 @@
+From 96da874c3b06faaa104902cc702e8625d383daf2 Mon Sep 17 00:00:00 2001
+From: Frederik Carlier <frederik.carlier@keysight.com>
+Date: Sat, 7 Sep 2024 15:08:24 -0700
+Subject: [PATCH] Windows compatibility
+
+unistd.h is not available on Windows, so check for its existence before including it.
+---
+ Tools/gpbs.m | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Tools/gpbs.m b/Tools/gpbs.m
+index fb7bac2..5cf7251 100644
+--- a/Tools/gpbs.m
++++ b/Tools/gpbs.m
+@@ -38,7 +38,12 @@
+ #endif
+ 
+ #include <signal.h>
++#ifdef	HAVE_UNISTD_H
+ #include <unistd.h>
++#else
++#include <io.h>
++#define strcasecmp _stricmp
++#endif
+ #include <ctype.h>
+ 
+ #ifdef __MINGW__
+-- 
+2.45.2.windows.1
+
