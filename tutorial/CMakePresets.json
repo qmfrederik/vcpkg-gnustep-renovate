@@ -1,0 +1,39 @@
+{
+    "version": 2,
+    "configurePresets": [
+      {
+        "name": "windows",
+        "generator": "Ninja",
+        "binaryDir": "build",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/../vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/../triplets/toolchains/x64-windows-llvm.toolchain.cmake",
+          "PKG_CONFIG_EXECUTABLE":"${sourceDir}/../vcpkg/installed/x64-windows/tools/pkgconf/pkgconf.exe",
+          "VCPKG_TARGET_TRIPLET": "x64-windows-llvm",
+          "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        }
+      },
+      {
+        "name": "linux",
+        "generator": "Ninja",
+        "binaryDir": "build",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/../vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/../triplets/toolchains/x64-linux-llvm.toolchain.cmake",
+          "VCPKG_TARGET_TRIPLET": "x64-linux-llvm",
+          "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        }
+      }
+    ],
+    "buildPresets": [
+        {
+            "name": "windows",
+            "configurePreset": "windows"
+        },
+        {
+            "name": "linux",
+            "configurePreset": "linux"
+        }
+    ]
+  }
+  
