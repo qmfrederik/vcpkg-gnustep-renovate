@@ -1,7 +1,7 @@
 find_package(PkgConfig)
 
 pkg_check_modules(PC_OBJC REQUIRED libobjc)
-pkg_check_modules(PC_GNUSTEP_BASE REQUIRED gnustep-gui)
+pkg_check_modules(PC_GNUSTEP_BASE REQUIRED gnustep-base)
 pkg_check_modules(PC_GNUSTEP_GUI REQUIRED gnustep-gui)
 
 # These variables should always be set when using GNUstep
@@ -13,6 +13,11 @@ list(APPEND GNUSTEP_COMPILE_DEFINITIONS "GNU_GUI_LIBRARY=1")
 
 list(APPEND GNUSTEP_COMPILE_DEFINITIONS $<$<CONFIG:Debug>:GSWARN>)
 list(APPEND GNUSTEP_COMPILE_DEFINITIONS $<$<CONFIG:Debug>:GSDIAGNOSE>)
+
+# On Windows, GNUSTEP_WITH_DLL is always set
+if(WIN32)
+    list(APPEND GNUSTEP_COMPILE_DEFINITIONS "GNUSTEP_WITH_DLL=1")
+endif()
 
 message(STATUS "GNUstep configuration:")
 
@@ -87,12 +92,12 @@ find_library(GNUSTEP_GUI gnustep-gui HINTS ${PC_GNUSTEP_GUI_LIBRARY_DIRS} REQUIR
 add_library(GNUstep::ObjC INTERFACE IMPORTED)
 target_include_directories(GNUstep::ObjC INTERFACE ${OBJECTIVE_C_INCLUDE_DIRECTORY})
 target_compile_options(GNUstep::ObjC INTERFACE ${GNUSTEP_COMPILE_OPTIONS})
+target_compile_definitions(GNUstep::ObjC INTERFACE ${GNUSTEP_COMPILE_DEFINITIONS})
 target_link_libraries(GNUstep::ObjC INTERFACE ${GNUSTEP_LIBOBJC})
 
 add_library(GNUstep::Base INTERFACE IMPORTED)
 target_include_directories(GNUstep::Base INTERFACE ${FOUNDATION_INCLUDE_DIRECTORY})
 target_link_libraries(GNUstep::Base INTERFACE ${GNUSTEP_BASE})
-set_target_properties(GNUstep::Base PROPERTIES IMPORTED_LOCATION "${GNUSTEP_BASE}/../bin/gnustep-base-1_30.dll")
 
 add_library(GNUstep::GUI INTERFACE IMPORTED)
 target_include_directories(GNUstep::GUI INTERFACE ${GUI_INCLUDE_DIRECTORY})
@@ -100,7 +105,3 @@ target_link_libraries(GNUstep::GUI INTERFACE ${GNUSTEP_GUI})
 
 target_link_libraries(GNUstep::Base INTERFACE GNUstep::ObjC)
 target_link_libraries(GNUstep::GUI INTERFACE GNUstep::Base)
-
-message(STATUS "GNUstep definitions: ${GNUSTEP_COMPILE_DEFINITIONS}")
-message(STATUS "GNUstep flags: ${GNUSTEP_COMPILE_OPTIONS}")
-message(STATUS "GNUstep include directories: ${GNUSTEP_INCLUDE_DIRECTORIES}")

@@ -72,6 +72,7 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@master
       - name: Configure and build tutorial
         run: |
+          ./vcpkg/vcpkg.exe install gnustep:x64-windows-llvm --overlay-ports=./ports --overlay-triplets=./triplets
           cd tutorial
           cmake . --preset windows
           cmake --build --preset windows
@@ -193,6 +194,7 @@ jobs:
         if: matrix.family == 'rhel'
       - name: Configure and build tutorial
         run: |
+          ./vcpkg/vcpkg install gnustep:x64-linux-llvm --overlay-ports=./ports --overlay-triplets=./triplets
           cd tutorial
           cmake . --preset linux
           cmake --build --preset linux

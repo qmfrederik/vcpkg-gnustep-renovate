@@ -1,0 +1,22 @@
+{
+    "name": "gnustep",
+    "version": "0.1.0",
+    "description": "A CMake package for using GNUstep.",
+    "homepage": "https://github.com/qmfrederik/vcpkg-gnustep",
+    "license": "GPL-3.0",
+    "supports": "!static & (linux | windows)",
+    "dependencies": [
+      {
+        "name": "gnustep-gui"
+      },
+      {
+        "name": "vcpkg-gnustep",
+        "host": true
+      },
+      {
+        "name": "pkgconf",
+        "host": true,
+        "platform": "windows"
+      }
+    ]
+}
