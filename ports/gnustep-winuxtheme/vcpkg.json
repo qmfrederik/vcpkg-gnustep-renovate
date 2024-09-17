@@ -1,0 +1,18 @@
+{
+    "name": "gnustep-winuxtheme",
+    "version": "2022-12-26",
+    "description": "Win32 native widgets theme for GNUstep.",
+    "homepage": "https://github.com/gnustep/plugins-themes-WinUXTheme",
+    "license": "LGPL-2.1",
+    "supports": "!static & (linux | windows)",
+    "dependencies": [
+      {
+        "name": "gnustep-gui"
+      },
+      {
+        "name": "vcpkg-gnustep",
+        "host": true
+      }
+    ]
+  }
+  
