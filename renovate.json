@@ -19,6 +19,7 @@
         "matchDatasources": ["github-releases"],
         "matchDepNames": ["gnustep/libs-base"],
         "versioning": "regex:^(Release |base-|)(?<major>\\d+)[\\._](?<minor>\\d+)[\\._](?<patch>\\d+)$",
+        "extractVersionTemplate": "{{{ toJSON . }}}",
         "replacementVersionTemplate": "{{currentValue}} (CV) {{newVersion}} (NV) {{{ toJSON . }}} {{ version }} (version) {{ lookup (split newVersion '_') 0 }}.{{ lookup (split newVersion '_') 1 }}.{{ lookup (split newVersion '_') 2 }}.{{newMajor}}.{{newMinor}}.{{newPatch}}"
       }
     ]
