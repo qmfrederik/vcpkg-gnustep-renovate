@@ -8,7 +8,7 @@
         "fileFormat": "json",
         "fileMatch": ["^ports/gnustep-base/vcpkg.json$"],
         "matchStrings": [
-          "version"
+          "{\"currentValue\":version}"
         ],
         "depNameTemplate": "gnustep/libs-base",
         "datasourceTemplate": "github-releases"
