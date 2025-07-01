@@ -6,7 +6,7 @@
       {
         "customType": "jsonata",
         "fileFormat": "json",
-        "managerFilePatterns": ["^ports/gnustep-base/vcpkg.json$"],
+        "fileMatch": ["^ports/gnustep-base/vcpkg.json$"],
         "matchStrings": [
           "version"
         ],
