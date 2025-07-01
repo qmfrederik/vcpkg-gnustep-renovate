@@ -1,6 +1,6 @@
 {
     "name": "gnustep-headless",
-    "version": "0.31.0",
+    "version": "0.32.0",
     "description": "The GNUstep gui library is a library of graphical user interface classes written completely in the Objective-C language; the classes are based upon Apple's Cocoa framework (which came from the OpenStep specification).",
     "homepage": "https://github.com/gnustep/libs-back",
     "license": "LGPL-2.1",
