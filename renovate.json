@@ -17,7 +17,7 @@
       {
         "matchDatasources": ["github-releases"],
         "matchDepNames": ["gnustep/**"],
-        "versioning": "regex:^(Release |base-|)(?<major>\\d+)[\\._](?<minor>\\d+)[\\._](?<patch>\\d+)$"
+        "versioning": "regex:^(Release |\\w*-|)(?<major>\\d+)[\\._](?<minor>\\d+)[\\._](?<patch>\\d+)$"
       }
     ]
 }
