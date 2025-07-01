@@ -1,66 +1,25 @@
-From 754e50f6bb65ac0b7adf959ac49f7289fe2770ac Mon Sep 17 00:00:00 2001
+From 816242c478b987f88b66ba7596104d07b720b18f Mon Sep 17 00:00:00 2001
 From: Frederik Carlier <frederik.carlier@keysight.com>
-Date: Wed, 11 Sep 2024 14:15:21 +0000
+Date: Tue, 1 Jul 2025 13:23:49 +0200
 Subject: [PATCH] Fix Windows compatibility
 
 ---
- CMakeLists.txt        | 14 ++++++++------
- src/init.c            |  4 ++++
- tests/dispatch_test.h |  1 +
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 31ae4be..98b4768 100644
+index b8b61a5..fcad567 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -18,12 +18,14 @@ if("${CMAKE_C_SIMULATE_ID}" STREQUAL "MSVC")
+@@ -18,7 +18,7 @@ if("${CMAKE_C_SIMULATE_ID}" STREQUAL "MSVC")
  endif()
  
  if(CMAKE_SYSTEM_NAME STREQUAL Windows)
--  include(DispatchWindowsSupport)
--  dispatch_windows_arch_spelling(${CMAKE_SYSTEM_PROCESSOR} DISPATCH_MSVC_ARCH)
--  dispatch_windows_include_for_arch(${DISPATCH_MSVC_ARCH} DISPATCH_INCLUDES)
--  include_directories(BEFORE SYSTEM ${DISPATCH_INCLUDES})
--  dispatch_windows_lib_for_arch(${CMAKE_SYSTEM_PROCESSOR} DISPATCH_LIBDIR)
--  link_directories(${DISPATCH_LIBDIR})
+-  if(NOT MINGW)
 +  if("${CMAKE_C_COMPILER_FRONTEND_VARIANT}" STREQUAL "MSVC")
-+    include(DispatchWindowsSupport)
-+    dispatch_windows_arch_spelling(${CMAKE_SYSTEM_PROCESSOR} DISPATCH_MSVC_ARCH)
-+    dispatch_windows_include_for_arch(${DISPATCH_MSVC_ARCH} DISPATCH_INCLUDES)
-+    include_directories(BEFORE SYSTEM ${DISPATCH_INCLUDES})
-+    dispatch_windows_lib_for_arch(${CMAKE_SYSTEM_PROCESSOR} DISPATCH_LIBDIR)
-+    link_directories(${DISPATCH_LIBDIR})
-+  endif()
- 
-   include(CheckCSourceCompiles)
-   check_c_source_compiles([=[
-diff --git a/src/init.c b/src/init.c
-index d54da41..8eba91b 100644
---- a/src/init.c
-+++ b/src/init.c
-@@ -40,6 +40,10 @@
- #define RDAR_49023449 1
- #endif // __linux__
- 
-+#if defined(_WIN32)
-+#define strdup _strdup
-+#endif
-+
- #pragma mark -
- #pragma mark dispatch_init
- 
-diff --git a/tests/dispatch_test.h b/tests/dispatch_test.h
-index a74da21..472cc6f 100644
---- a/tests/dispatch_test.h
-+++ b/tests/dispatch_test.h
-@@ -25,6 +25,7 @@
- #include <generic_unix_port.h>
- #elif defined(_WIN32)
- #include <generic_win_port.h>
-+#define unlink _unlink
- #endif
- 
- #define test_group_wait(g) do { \
+     include(DispatchWindowsSupport)
+     dispatch_windows_arch_spelling(${CMAKE_SYSTEM_PROCESSOR} DISPATCH_MSVC_ARCH)
+     dispatch_windows_include_for_arch(${DISPATCH_MSVC_ARCH} DISPATCH_INCLUDES)
 -- 
-2.46.0.windows.1
+2.50.0.windows.1
 
