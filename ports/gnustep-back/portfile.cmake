@@ -4,7 +4,7 @@ vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO gnustep/libs-back
     REF "back-${MAKE_VERSION}"
-    SHA512 518a6fe9926c4008e5d39319dce4fa38d7328390517663aaa9e89e99c1b456bcd08b69baa793546d0f365c69f14f27f6c6f1417da5013fae5c26d7429f2f8304
+    SHA512 0bf9b39e7cfe704039c02cc302c091fa8c2a71aa8600be497aca025712bc9a805038310aaddba00dc523e1743dba76f3bba5cdf6d36e3b08c89bb5c18ace6175
     HEAD_REF master
     PATCHES
         0001-Windows-compatibility.patch
