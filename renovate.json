@@ -4,12 +4,12 @@
     "enabledManagers": ["custom.regex"],
     "customManagers": [
       {
-        "customType": "regex",
-        "fileMatch": ["^ports/gnustep-base/vcpkg.json$"],
+        "customType": "jsonata",
+        "fileFormat": "json",
+        "managerFilePatterns": ["^ports/gnustep-base/vcpkg.json$"],
         "matchStrings": [
-          "\"version\": \"?(?<currentValue>[0-9\\.]*)\""
+          "version"
         ],
-        "autoReplaceStringTemplate": "\"version\": \"{{newMajor}}.{{newMinor}}.{{newPatch}}\"",
         "depNameTemplate": "gnustep/libs-base",
         "datasourceTemplate": "github-releases"
       }
