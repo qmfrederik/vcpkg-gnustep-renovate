@@ -4,7 +4,7 @@ vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO gnustep/tools-make
     REF "make-${MAKE_VERSION}"
-    SHA512 ec1a21a36cd39d354dc1ed88e2c0b576ae5418af562f6ecb66619442d967a22b0eb7dee9914cfe4430674ca0c409d5755df76308a7c90af64ab9dbeaf9b85b28
+    SHA512 e3230d3bf5ca6cb0cb721ebc9f2a0b554315e14d7e71a6e4d4f54d23d8e4c09cc229609e5b87f911f59873721ba46bd7f3cc22d19a4b5a2fd1456c2f7e3ec50d
     HEAD_REF master
     PATCHES
 )

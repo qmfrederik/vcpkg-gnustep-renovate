@@ -1,6 +1,6 @@
 {
     "name": "gnustep-make",
-    "version": "make-2_9_3",
+    "version": "2.9.3",
     "description": "The makefile package is a simple, powerful and extensible way to write makefiles for a GNUstep-based project.",
     "homepage": "https://github.com/gnustep/tools-make",
     "license": "GPL-3.0",
