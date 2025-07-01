@@ -22,9 +22,7 @@ as an editor and Git for source code interations.
 - [LLVM](https://releases.llvm.org/download.html)
 - [Git for Windows](https://git-scm.com/download/win)
 
-You'll need a version of LLVM which includes [support for referencing instance variables which are in an external module](https://github.com/llvm/llvm-project/commit/7c25ae87f7378f38aa49a92b9cf8092deb95a1f4).  In practice, that means LLVM 20.0, which should be available
-near the end of 2024.  Meanwhile,  you can [download a prebuilt copy of LLVM](https://qmcdn.blob.core.windows.net/gnustep/clang-19.x-objc.zip)
-with this fix backported.
+You'll need a version of LLVM which includes [support for referencing instance variables which are in an external module](https://github.com/llvm/llvm-project/commit/7c25ae87f7378f38aa49a92b9cf8092deb95a1f4).  In practice, that means LLVM 20.0 or later, which you can download at https://releases.llvm.org/.
 
 To get started, run the following commands:
 
