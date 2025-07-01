@@ -1,7 +1,7 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "baseBranches": ["main"],
-    "enabledManagers": ["custom.regex"],
+    "enabledManagers": ["custom.regex","jsonata"],
     "customManagers": [
       {
         "customType": "jsonata",
