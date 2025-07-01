@@ -8,7 +8,7 @@ on:
 
 jobs:
   windows:
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,12 +22,6 @@ jobs:
           ref: 2024.08.23
           fetch-depth: 1
           path: vcpkg
-      - name: Install clang 19.x-objc
-        run: |
-          Remove-Item -Recurse 'C:\Program Files\LLVM\'
-          Invoke-WebRequest -UseBasicParsing -Uri https://qmcdn.blob.core.windows.net/gnustep/clang-19.x-objc.zip -OutFile clang-19.x-objc.zip
-          Expand-Archive -Path clang-19.x-objc.zip -DestinationPath 'C:\Program Files\LLVM\' -Force
-          & 'C:\Program Files\LLVM\bin\clang.exe' --version
       - name: Check LLVM version
         # We need at least LLVM 18.0 for proper Objective C support.  Visual Studio 2022 ships with LLVM 17,
         # so we need to make sure we pick up clang from C:\Program Files\LLVM\bin\
