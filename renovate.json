@@ -16,7 +16,7 @@
     "packageRules": [
       {
         "matchDatasources": ["github-releases"],
-        "matchDepNames": ["gnustep/\\w*"],
+        "matchDepNames": ["gnustep/**"],
         "versioning": "regex:^(Release |base-|)(?<major>\\d+)[\\._](?<minor>\\d+)[\\._](?<patch>\\d+)$"
       }
     ]
