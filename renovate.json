@@ -10,6 +10,7 @@
         "matchStrings": [
           "\"version\": \"?(?<currentValue>[0-9\\.]*)\""
         ],
+        "autoReplaceStringTemplate": "\"version\": {{{ toJSON . }}}",
         "depNameTemplate": "gnustep/libs-base",
         "datasourceTemplate": "github-releases"
       }
