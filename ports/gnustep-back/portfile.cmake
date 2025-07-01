@@ -7,9 +7,7 @@ vcpkg_from_github(
     SHA512 0bf9b39e7cfe704039c02cc302c091fa8c2a71aa8600be497aca025712bc9a805038310aaddba00dc523e1743dba76f3bba5cdf6d36e3b08c89bb5c18ace6175
     HEAD_REF master
     PATCHES
-        0001-Windows-compatibility.patch
         0001-Don-t-link-with-libm-on-Windows.patch
-        0001-Define-WINBOOL-on-non-MinGW-platforms.patch
 )
 
 if(VCPKG_TARGET_IS_WINDOWS)
