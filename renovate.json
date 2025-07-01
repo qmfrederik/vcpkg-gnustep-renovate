@@ -2,7 +2,6 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "baseBranches": ["main"],
     "enabledManagers": ["custom.regex"],
-    "repositories": ["qmfrederik/vcpkg-gnustep"],
     "customManagers": [
       {
         "customType": "regex",
@@ -19,8 +18,7 @@
       {
         "matchDatasources": ["github-releases"],
         "matchDepNames": ["gnustep/libs-base"],
-        "versioning": "regex:^(Release |base-|)(?<major>\\d+)[\\._](?<minor>\\d+)[\\._](?<patch>\\d+)$",
-        "extractVersionTemplate": "^(Release |base-|)(?<version>\\d+[\\._]\\d+[\\._]\\d+[\\._])$"
+        "versioning": "regex:^(Release |base-|)(?<major>\\d+)[\\._](?<minor>\\d+)[\\._](?<patch>\\d+)$"
       }
     ]
 }
