@@ -1,24 +1,23 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "baseBranches": ["main"],
-    "enabledManagers": ["custom.regex"],
-    "repositories": ["qmfrederik/vcpkg-gnustep"],
+    "enabledManagers": ["custom.regex","jsonata"],
     "customManagers": [
       {
-        "customType": "regex",
-        "fileMatch": ["^ports/gnustep-base/vcpkg.json$"],
+        "customType": "jsonata",
+        "fileFormat": "json",
+        "fileMatch": ["^ports/gnustep-\\w*/vcpkg.json$"],
         "matchStrings": [
-          "\"version\": \"?(?<currentValue>[0-9\\.]*)\""
+          "{\"currentValue\":version,\"depName\":$replace(homepage,\"https://github.com/\",\"\")}"
         ],
-        "depNameTemplate": "gnustep/libs-base",
         "datasourceTemplate": "github-releases"
       }
     ],
     "packageRules": [
       {
         "matchDatasources": ["github-releases"],
-        "matchDepNames": ["gnustep/libs-base"],
-        "extractVersion": "^Release (?<version>[0-9\\.])$"
+        "matchDepNames": ["gnustep/**"],
+        "versioning": "regex:^(Release |\\w*-|)(?<major>\\d+)[\\._](?<minor>\\d+)[\\._](?<patch>\\d+)$"
       }
     ]
 }

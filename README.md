@@ -64,3 +64,15 @@ Then, open VS Code and configure the CMake integration in VS Code.  Clangd shoul
 providing editor support.
 
 To debug your application, create a `launch.json` file which uses the `lldb` debugger.  Then, you can launch and debug your application:
+
+### Automatic Updates with Renovate
+
+This repository uses Renovate to automatically check for dependency updates.
+
+To test Renovate, you may want to consider cloning this repository into a new repo (as to not to clutter this repo with misconfigured Renovate pull requests).  Push an updated `renovate.json` to main of the cloned repo, and then run:
+
+```
+set RENOVATE_TOKEN=ghp_{your_token}
+set GITHUB_COM_TOKEN=ghp_{your_token}
+npx renovate {owner}/{repo}
+```
