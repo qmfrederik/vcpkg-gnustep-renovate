@@ -4,7 +4,7 @@ vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO gnustep/libs-gui
     REF "gui-${MAKE_VERSION}"
-    SHA512 7e07b3122b9200567d288ec2c6cac219760bd87117352565cab22aa27f3986de8642ee6bb1f639d6a53bc800caec9ff91e42b3785e25184e125b1a1b00b3c1a1
+    SHA512 43010bb2bdf714ee63ce6c91c4d951f1c259a66420e9a7b514de8f377d33f48c2960cbfa81c011af589e6ad9a99e8dee1fad6cd54ac4b447952122f3a1b2e13b
     HEAD_REF master
     PATCHES
         # https://github.com/gnustep/libs-gui/pull/288
