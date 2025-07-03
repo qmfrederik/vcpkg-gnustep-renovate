@@ -1,5 +1,12 @@
 string(REPLACE "." "_" MAKE_VERSION ${VERSION})
 
+# On Windows, the libraries include a version number in their name, such as
+# gnustep-base-1_30.dll .
+# Determine that form $VERSION through some CMake magic
+string(REPLACE "." ";" VERSION_COMPONENTS ${VERSION})
+list(SUBLIST VERSION_COMPONENTS 0 2 VERSION_MAJOR_MINOR)
+string(REPLACE ";" "_" LIBRARY_VERSION "${VERSION_MAJOR_MINOR}")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO gnustep/libs-base
@@ -58,7 +65,7 @@ if (VCPKG_TARGET_IS_WINDOWS)
             ${CURRENT_PACKAGES_DIR}/bin/xmlparse.exe
 
             # Shared libraries required by these tools
-            ${CURRENT_PACKAGES_DIR}/bin/gnustep-base-1_30.dll
+            ${CURRENT_PACKAGES_DIR}/bin/gnustep-base-${LIBRARY_VERSION}.dll
             ${CURRENT_INSTALLED_DIR}/bin/objc.dll
             ${CURRENT_INSTALLED_DIR}/bin/iconv-2.dll
             ${CURRENT_INSTALLED_DIR}/bin/libxml2.dll
