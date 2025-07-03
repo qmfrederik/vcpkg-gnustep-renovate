@@ -1,0 +1,25 @@
+From 6adc3f9103a6e75d3783eb6fe641fbcb95c8cc16 Mon Sep 17 00:00:00 2001
+From: Ryan VanderMeulen <rvandermeulen@mozilla.com>
+Date: Tue, 25 Feb 2025 11:13:44 -0500
+Subject: [PATCH] Add check for clang to cairo attribute handling code
+
+---
+ src/cairo-compiler-private.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/cairo-compiler-private.h b/src/cairo-compiler-private.h
+index 28455f99d..ab2d216e1 100644
+--- a/src/cairo-compiler-private.h
++++ b/src/cairo-compiler-private.h
+@@ -144,7 +144,7 @@
+ #define unlikely(expr) (expr)
+ #endif
+ 
+-#ifndef __GNUC__
++#if !defined(__GNUC__) && !defined (__clang__)
+ #undef __attribute__
+ #define __attribute__(x)
+ #endif
+-- 
+2.50.0.windows.1
+
