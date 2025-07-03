@@ -76,3 +76,40 @@ set RENOVATE_TOKEN=ghp_{your_token}
 set GITHUB_COM_TOKEN=ghp_{your_token}
 npx renovate {owner}/{repo}
 ```
+
+### Fixes for specific ports
+
+#### Using clang-cl
+Some ports should be compiled with [clang-cl](https://clang.llvm.org/docs/UsersManual.html#clang-cl), which uses a msvc-compatible command line syntax.
+
+Often, these ports fail to compile with a command-line invocation which appears to be a mix of clang and Visual C++ arguments, such as:
+
+```
+libtool: compile:  llvm-rc.exe -DPACKAGE_VERSION_STRING=\\\"0.22.5\\\" -DPACKAGE_VERSION_MAJOR=0 -DPACKAGE_VERSION_MINOR=22 -DPACKAGE_VERSION_SUBMINOR=5 -i ./../src/gettext-0-5775b97cd5.clean/gettext-runtime/intl/libintl.rc --output-format=coff  -o .libs/libintl.res.o
+```
+
+or
+
+```
+Detecting linker via: `"C:/Program Files/LLVM/bin/clang.exe" -O0 -g -Xclang -gcodeview -Wl,--version /LIBPATH:C:/Users/vagrant/Source/Repos/vcpkg-gnustep/vcpkg/installed/x64-windows-llvm/debug/lib "-fuse-ld=C:/Program Files/LLVM/bin/lld-link.exe"` -> 1
+stderr:
+clang: error: no such file or directory: '/LIBPATH:C:/Users/vagrant/Source/Repos/vcpkg-gnustep/vcpkg/installed/x64-windows-llvm/debug/lib'
+```
+
+To account for this, add the name of the port to the exception list in `triplets/x64-windows-llvm.cmake`.
+
+#### Compiling gettext-libintl
+
+This is a dependency of `cairo` but not `cairo[core]`.  Skip this dependency by building `cairo[core]`.
+
+#### Meson build errors
+
+If a Meson build fails with the the following error:
+
+```
+FileNotFoundError: [WinError 2] The system cannot find the file specified
+```
+
+Then this is most likely because Meson is looking for `lld-link` without specifying an explicit path (https://github.com/mesonbuild/meson/issues/9727).
+
+To account for this, add the name of the port to the exception list in `triplets/x64-windows-llvm.cmake`.
