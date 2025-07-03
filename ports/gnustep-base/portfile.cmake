@@ -17,6 +17,9 @@ vcpkg_from_github(
         # https://github.com/gnustep/libs-base/pull/514
         # Expose declarations in NSDebug.h even when NDEBUG is defined #514
         ec6299f72faa04f4bb019d4f2a0984fe832b09c0.patch
+        # https://github.com/gnustep/libs-base/pull/517
+        # Add support for Rocky Linux 8 / libcurl 7.61
+        0001-Support-libcurl-7.61.patch
 )
 
 vcpkg_list(SET options)
