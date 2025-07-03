@@ -15,6 +15,12 @@ else()
     set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchains/x64-windows-llvm.toolchain.cmake")
 endif()
 
+# Workaround for meson-style projects, such as pixman, which try to look for lld-link in the current path
+# See https://github.com/mesonbuild/meson/issues/9727
+if(PORT MATCHES "^(pixman|cairo)$")
+    set(ENV{PATH} "$ENV{ProgramW6432}/LLVM/bin;$ENV{PATH}")
+endif()
+
 # Port-specific fixes which we should remove over time
 if(PORT MATCHES "liblzma")
     # Pretend to be msvc, as otherwise the build system will default to GCC-style semantics (and we're using clang)
