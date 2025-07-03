@@ -14,6 +14,9 @@ vcpkg_from_github(
     SHA512 8035409dd6f8e2fd4ba2255c6df4add2e88f50159f67a9de22a3fd7743db8a8a90cc61e91c43c91727204bb07b337aa96fb679f72b70c98fa9389c5ceeaad3cc
     HEAD_REF master
     PATCHES
+        # https://github.com/gnustep/libs-base/pull/514
+        # Expose declarations in NSDebug.h even when NDEBUG is defined #514
+        ec6299f72faa04f4bb019d4f2a0984fe832b09c0.patch
 )
 
 vcpkg_list(SET options)
