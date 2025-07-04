@@ -12,7 +12,7 @@ if(WIN32)
     set(VCPKG_BINDIR "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin")
     file(COPY
         ${VCPKG_BINDIR}/objc.dll
-        ${VCPKG_BINDIR}/gnustep-base-1_30.dll
+        ${VCPKG_BINDIR}/gnustep-base-1_31.dll
         ${VCPKG_BINDIR}/libxml2.dll
         ${VCPKG_BINDIR}/ffi-8.dll
         ${VCPKG_BINDIR}/libxml2.dll
