@@ -1,12 +1,25 @@
 string(REPLACE "." "_" MAKE_VERSION ${VERSION})
 
+# On Windows, the libraries include a version number in their name, such as
+# gnustep-base-1_30.dll .
+# Determine that form $VERSION through some CMake magic
+string(REPLACE "." ";" VERSION_COMPONENTS ${VERSION})
+list(SUBLIST VERSION_COMPONENTS 0 2 VERSION_MAJOR_MINOR)
+string(REPLACE ";" "_" LIBRARY_VERSION "${VERSION_MAJOR_MINOR}")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO gnustep/libs-base
     REF "base-${MAKE_VERSION}"
-    SHA512 f656ad73138e476874fa70c5fa74718b023e97314e80d3a75ec7f25efe90d11a8dd6dd5d18706797e7be590f53300e9adb031bba3c85fdf9fd909dbf0d57b08e
+    SHA512 8035409dd6f8e2fd4ba2255c6df4add2e88f50159f67a9de22a3fd7743db8a8a90cc61e91c43c91727204bb07b337aa96fb679f72b70c98fa9389c5ceeaad3cc
     HEAD_REF master
     PATCHES
+        # https://github.com/gnustep/libs-base/pull/514
+        # Expose declarations in NSDebug.h even when NDEBUG is defined #514
+        ec6299f72faa04f4bb019d4f2a0984fe832b09c0.patch
+        # https://github.com/gnustep/libs-base/pull/517
+        # Add support for Rocky Linux 8 / libcurl 7.61
+        0001-Support-libcurl-7.61.patch
 )
 
 vcpkg_list(SET options)
@@ -58,7 +71,7 @@ if (VCPKG_TARGET_IS_WINDOWS)
             ${CURRENT_PACKAGES_DIR}/bin/xmlparse.exe
 
             # Shared libraries required by these tools
-            ${CURRENT_PACKAGES_DIR}/bin/gnustep-base-1_30.dll
+            ${CURRENT_PACKAGES_DIR}/bin/gnustep-base-${LIBRARY_VERSION}.dll
             ${CURRENT_INSTALLED_DIR}/bin/objc.dll
             ${CURRENT_INSTALLED_DIR}/bin/iconv-2.dll
             ${CURRENT_INSTALLED_DIR}/bin/libxml2.dll
