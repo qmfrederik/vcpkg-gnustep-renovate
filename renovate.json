@@ -11,6 +11,15 @@
           "{\"currentValue\":version,\"depName\":$replace(homepage,\"https://github.com/\",\"\")}"
         ],
         "datasourceTemplate": "github-releases"
+      },
+      {
+        "customType": "jsonata",
+        "fileFormat": "yaml",
+        "fileMatch": ["^.github/workflows/ci.yaml$"],
+        "matchStrings": [
+          "{\"currentValue\":env.VCPKG_VERSION,\"depName\":\"microsoft/vcpkg\"}"
+        ],
+        "datasourceTemplate": "github-releases"
       }
     ],
     "packageRules": [
@@ -18,6 +27,11 @@
         "matchDatasources": ["github-releases"],
         "matchDepNames": ["gnustep/**"],
         "versioning": "regex:^(Release |\\w*-|)(?<major>\\d+)[\\._](?<minor>\\d+)[\\._](?<patch>\\d+)$"
+      },
+      {
+        "matchDatasources": ["github-releases"],
+        "matchDepNames": ["microsoft/vcpkg"],
+        "versioning": "regex:^(?<major>\\d+).0?(?<minor>\\d+).0?(?<patch>\\d+)$"
       }
     ]
 }
