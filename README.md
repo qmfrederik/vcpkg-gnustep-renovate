@@ -67,13 +67,21 @@ To debug your application, create a `launch.json` file which uses the `lldb` deb
 
 ### Automatic Updates with Renovate
 
-This repository uses Renovate to automatically check for dependency updates.
+This repository uses Renovate to automatically check for dependency updates. The configuraiton can be found in `renovate.json`.  Roughly, the `customManagers` section allows Renovate to identify which packages are being used in this project.  The `packageRules` section defines how to get the latest version information from the upstream systems, such as GitHub.
+
+Pay special attention to the `version` regular expressions, as they need to match both the version number as it appears in `vcpkg.json` and the tag used by the equivalent GitHub release.  These can vary wildly, here are a couple of examples:
+
+| Package      | `vcpkg.json` | GitHub release tag  | regex
+|--------------|--------------|---------------------|---------
+| gnustep-base | `1.31.1`     | `base-1_31_1`       | `^(Release |\w*-|v)?(?<major>\d+)[\._](?<minor>\d+)([\._](?<patch>\d+))?$`
+| libdispatch  | `6.1`        | `swift-6.1-RELEASE` | `^(swift-)?(?<major>\d+).(?<minor>\d+)(.(?<patch>\d+))?(-RELEASE)?$`
 
 To test Renovate, you may want to consider cloning this repository into a new repo (as to not to clutter this repo with misconfigured Renovate pull requests).  Push an updated `renovate.json` to main of the cloned repo, and then run:
 
 ```
 set RENOVATE_TOKEN=ghp_{your_token}
 set GITHUB_COM_TOKEN=ghp_{your_token}
+set LOG_LEVEL=debug
 npx renovate {owner}/{repo}
 ```
 

@@ -6,7 +6,7 @@
       {
         "customType": "jsonata",
         "fileFormat": "json",
-        "fileMatch": ["^ports/gnustep-\\w*/vcpkg.json$"],
+        "fileMatch": ["^ports/(gnustep-\\w*|libdispatch|libffi|libobjc2)/vcpkg.json$"],
         "matchStrings": [
           "{\"currentValue\":version,\"depName\":$replace(homepage,\"https://github.com/\",\"\")}"
         ],
@@ -35,7 +35,12 @@
       {
         "matchDatasources": ["github-releases"],
         "matchDepNames": ["gnustep/**"],
-        "versioning": "regex:^(Release |\\w*-|)(?<major>\\d+)[\\._](?<minor>\\d+)[\\._](?<patch>\\d+)$"
+        "versioning": "regex:^(Release |\\w*-|v)?(?<major>\\d+)[\\._](?<minor>\\d+)([\\._](?<patch>\\d+))?$"
+      },
+      {
+        "matchDatasources": ["github-releases"],
+        "matchDepNames": ["swiftlang/swift-corelibs-libdispatch"],
+        "versioning": "regex:^(swift-)?(?<major>\\d+).(?<minor>\\d+)(.(?<patch>\\d+))?(-RELEASE)?$"
       },
       {
         "matchDatasources": ["github-releases"],
