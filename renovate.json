@@ -14,6 +14,15 @@
       },
       {
         "customType": "jsonata",
+        "fileFormat": "json",
+        "fileMatch": ["^ports/libxml2/vcpkg.json$"],
+        "matchStrings": [
+          "{\"currentValue\":version,\"depName\":\"GNOME/libxml2\",\"registryUrl\":\"https://gitlab.gnome.org/\"}"
+        ],
+        "datasourceTemplate": "gitlab-releases"
+      },
+      {
+        "customType": "jsonata",
         "fileFormat": "yaml",
         "fileMatch": ["^.github/workflows/ci.yaml$"],
         "matchStrings": [
@@ -32,6 +41,11 @@
         "matchDatasources": ["github-releases"],
         "matchDepNames": ["microsoft/vcpkg"],
         "versioning": "regex:^(?<major>\\d+).0?(?<minor>\\d+).0?(?<patch>\\d+)$"
+      },
+      {
+        "matchDatasources": ["gitlab-releases"],
+        "matchDepNames": ["GNOME/libxml2"],
+        "versioning": "semver-coerced"
       }
     ]
 }
