@@ -11,6 +11,9 @@ vcpkg_from_github(
         # Invoking make_services in a msys shell fails, so disable building tools for now:
         # [..]/buildtrees/gnustep-gui/x64-windows-llvm-dbg/Tools/obj/make_services.exe: error while loading shared libraries: api-ms-win-crt-heap-l1-1-0.dll: cannot open shared object file: No such file or directory
         0001-Disable-building-Tools.patch
+        # tiff.m: Only include unistd.h if it exists
+        # https://github.com/gnustep/libs-gui/pull/352
+        0001-Only-include-unistd.h-if-it-exists.patch
 )
 
 vcpkg_list(SET options)
